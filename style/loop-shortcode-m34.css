@@ -1,0 +1,43 @@
+.m34loop-item {
+	width: 22.5%;
+	float: left;
+	margin: 1.25%;
+	display: block;
+	font-size: 1.3rem;
+}
+.m34loop-item a:hover {
+	text-decoration: underline;
+}
+.m34loop-item-1 {
+	clear: both;
+}
+.m34loop-item img {
+	border-bottom: 3px solid transparent;
+}
+.m34loop-item img:hover {
+	border-bottom: 3px solid #fc0;
+}
+
+
+.m34loop-tit {
+	font-size: 1.5rem;
+	line-height: 1.3em;
+	margin: 0;
+}
+.m34loop-date {
+	color: #aaa;
+}
+.m34loop-desc {
+	padding: 0.5rem 0;
+}
+.m34loop-more {
+	clear: both;
+}
+.m34loop-more a {
+	padding: 3px 5px;
+	background-color: #fd5;
+	color: #fff;
+}
+.m34loop-more a:hover {
+	background-color: #fc0;
+}
