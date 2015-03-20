@@ -46,11 +46,13 @@ function m34loops( $loop_args ) {
 		setup_postdata($item);
 		$item_cats = get_the_terms($item->ID,'category');
 		if ( is_array($item_cats) ) {
+			$item_cats_array = array();
 			$item_cats_out = "<div class='m34loop-terms'>";
 			foreach ( $item_cats as $cat ) {
 				$cat_perma = get_term_link($cat);
-				$item_cats_out .= "<a href='" .$cat_perma. "'>" .$cat->name. "</a>";
+				$item_cats_array[] = "<a href='" .$cat_perma. "'>" .$cat->name. "</a>";
 			}
+			$item_cats_out .= implode(', ', $item_cats_array);
 			$item_cats_out .= "</div>";
 		} else { $item_cats = ""; }
 		$item_date_human = get_the_date('j F, Y',$item->ID);
