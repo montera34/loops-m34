@@ -96,7 +96,6 @@ function m34loops( $loop_args ) {
 		</section>";
 
 	} // END foreach $loop_items
-	$loop_out .= "<div class='m34loop-more'><a href='/actualites'>Plus d'actualités</a></div>";
 	return $loop_out;
 
 } /* END loops shortcode */
