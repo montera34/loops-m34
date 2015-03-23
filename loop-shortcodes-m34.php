@@ -24,7 +24,8 @@ function m34loops( $loop_args ) {
 			'post_type' => 'post',
 			'order' => 'DESC',
 			'orderby' => 'date',
-			'posts_per_page' => '12'
+			'posts_per_page' => '12',
+			'fields' => 'featured image,title,date,excerpt'
 		),
 		$loop_args,
 		'm34loop'
@@ -37,6 +38,9 @@ function m34loops( $loop_args ) {
 	);
 	$loop_items = get_posts($args);
 
+	// fields to include in each item	
+	$fields = explode(',',$fields);
+
 	$loop_out = "";
 	$loop_count = 0;
 	foreach ( $loop_items as $item ) {
@@ -44,31 +48,51 @@ function m34loops( $loop_args ) {
 		$item_class = "m34loop-item-" .$loop_count;
 		if ( $loop_count == 4 ) {  $loop_count = 0; }
 		setup_postdata($item);
+		// fixed fields
+		$item_perma = get_permalink($item->ID);
+		$item_tit = get_the_title($item->ID);
 		$item_cats = get_the_terms($item->ID,'category');
 		if ( is_array($item_cats) ) {
 			$item_cats_array = array();
-			$item_cats_out = "<div class='m34loop-terms'>";
+			$item_cats_out = "<footer><div class='m34loop-terms'>";
 			foreach ( $item_cats as $cat ) {
 				$cat_perma = get_term_link($cat);
 				$item_cats_array[] = "<a href='" .$cat_perma. "'>" .$cat->name. "</a>";
 			}
 			$item_cats_out .= implode(', ', $item_cats_array);
-			$item_cats_out .= "</div>";
-		} else { $item_cats = ""; }
-		$item_date_human = get_the_date('j F, Y',$item->ID);
-		$item_date = get_the_date('Y-m-d',$item->ID);
-		$item_date_out = "<time class='m34loop-date' datetime='$item_date'>" .$item_date_human. "</time>";
-		$item_tit = get_the_title($item->ID);
-		$item_perma = get_permalink($item->ID);
-		$item_desc = get_the_excerpt();
-		if ( has_post_thumbnail($item->ID) ) {
-			$item_img_out = "<figure><a href='" .$item_perma. "' title='" .$item_tit. "' rel='bookmark'>" .get_the_post_thumbnail($item->ID,'medium'). "</a></figure>";
-		} else { $item_img_out = ""; }
+			$item_cats_out .= "</div></footer>";
+		} else { $item_cats_out = ""; }
+
+		// optional fields
+		$fields_out = "";
+		foreach ( $fields as $f ) {
+			switch ( trim($f)) {
+			
+				case 'featured image' : // featured image
+					if ( has_post_thumbnail($item->ID) ) {
+						$fields_out .= "<figure><a href='" .$item_perma. "' title='" .$item_tit. "' rel='bookmark'>" .get_the_post_thumbnail($item->ID,'medium'). "</a></figure>";
+					}
+					continue 2;
+		
+				case 'title' : // title
+					$fields_out .= "<header><h4 class='m34loop-tit'><a href='" .$item_perma. "' title='" .$item_tit. "' rel='bookmark'>" .$item_tit. "</a></h4></header>";
+					continue 2;
+		
+				case 'date' : // date
+					$item_date_human = get_the_date('j F, Y',$item->ID);
+					$item_date = get_the_date('Y-m-d',$item->ID);
+					$fields_out .= "<time class='m34loop-date' datetime='$item_date'>" .$item_date_human. "</time>";
+					continue 2;
+	
+				case 'excerpt' : // excerpt
+					$item_desc = get_the_excerpt();
+					$fields_out .= "<div class='m34loop-desc'>" .$item_desc. "</div>";
+					continue 2;
+			}
+		} // end switcher to include fields
+
 		$loop_out .= "<section class='m34loop-item " .$item_class. "'>
-			" .$item_img_out. "
-			<header><h4 class='m34loop-tit'><a href='" .$item_perma. "' title='" .$item_tit. "' rel='bookmark'>" .$item_tit. "</a></h4>" .$item_date_out. "</header>
-			<div class='m34loop-desc'>" .$item_desc. "</div>
-			<footer>" .$item_cats_out. "</footer>
+			" .$fields_out . $item_cats_out. "
 		</section>";
 
 	} // END foreach $loop_items
