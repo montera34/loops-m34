@@ -1,8 +1,28 @@
-.m34loop-item {
+.m34loop-item-1-col {
+	width: 100%;
+	display: block;
+}
+
+.m34loop-item-2-col {
+	width: 47%;
+	float: left;
+	margin: 1.5%;
+	display: block;
+}
+.m34loop-item-3-col {
+	width: 30%;
+	float: left;
+	margin: 1.5%;
+	display: block;
+}
+.m34loop-item-4-col {
 	width: 22.5%;
 	float: left;
 	margin: 1.25%;
 	display: block;
+}
+
+.m34loop-item {
 	font-size: 1.3rem;
 }
 .m34loop-item a:hover {
@@ -15,7 +35,7 @@
 	border-bottom: 3px solid transparent;
 }
 .m34loop-item img:hover {
-	border-bottom: 3px solid #fc0;
+	border-bottom: 3px solid;
 }
 
 
@@ -30,14 +50,4 @@
 .m34loop-desc {
 	padding: 0.5rem 0;
 }
-.m34loop-more {
-	clear: both;
-}
-.m34loop-more a {
-	padding: 3px 5px;
-	background-color: #fd5;
-	color: #fff;
-}
-.m34loop-more a:hover {
-	background-color: #fc0;
-}
+

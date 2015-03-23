@@ -34,7 +34,8 @@ function m34loops( $loop_args ) {
 			'order' => 'DESC',
 			'orderby' => 'date',
 			'posts_per_page' => '12',
-			'fields' => 'featured image,title,date,excerpt'
+			'fields' => 'featured image,title,date,excerpt',
+			'colums' => '1'
 		),
 		$loop_args,
 		'm34loop'
@@ -100,9 +101,9 @@ function m34loops( $loop_args ) {
 			}
 		} // end switcher to include fields
 
-		$loop_out .= "<section class='m34loop-item " .$item_class. "'>
+		$loop_out .= "<article class='m34loop-item m34loop-item-".$colums."-col " .$item_class. "'>
 			" .$fields_out . $item_cats_out. "
-		</section>";
+		</article>";
 
 	} // END foreach $loop_items
 	return $loop_out;
