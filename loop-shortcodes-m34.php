@@ -23,8 +23,8 @@ function m34loops_scripts_styles() {
 	  order
 	  orderby
 	  posts_per_page
-	+ To build each loop item (fields):
-	  fields: comma separated fields. Options: featured image, title, date, excerpt
+	+ To build each loop item (which fields and how to order them):
+	  fields: comma separated fields. Options: featured image, title, date, excerpt, a taxnomony slug
  */
 add_shortcode('m34loop', 'm34loops');
 function m34loops( $loop_args ) {
@@ -48,7 +48,7 @@ function m34loops( $loop_args ) {
 	);
 	$loop_items = get_posts($args);
 
-	// fields to include in each item	
+	// fields to include in each item
 	$fields = explode(',',$fields);
 
 	$loop_out = "";
@@ -58,20 +58,10 @@ function m34loops( $loop_args ) {
 		$item_class = "m34loop-item-" .$loop_count;
 		if ( $loop_count == 4 ) {  $loop_count = 0; }
 		setup_postdata($item);
+
 		// fixed fields
 		$item_perma = get_permalink($item->ID);
 		$item_tit = get_the_title($item->ID);
-		$item_cats = get_the_terms($item->ID,'category');
-		if ( is_array($item_cats) ) {
-			$item_cats_array = array();
-			$item_cats_out = "<footer><div class='m34loop-terms'>";
-			foreach ( $item_cats as $cat ) {
-				$cat_perma = get_term_link($cat);
-				$item_cats_array[] = "<a href='" .$cat_perma. "'>" .$cat->name. "</a>";
-			}
-			$item_cats_out .= implode(', ', $item_cats_array);
-			$item_cats_out .= "</div></footer>";
-		} else { $item_cats_out = ""; }
 
 		// optional fields
 		$fields_out = "";
@@ -98,11 +88,28 @@ function m34loops( $loop_args ) {
 					$item_desc = get_the_excerpt();
 					$fields_out .= "<div class='m34loop-desc'>" .$item_desc. "</div>";
 					continue 2;
+
+				default : // terms_list
+					if ( taxonomy_exists($f) == TRUE ) {
+						$item_cats = get_the_terms($item->ID,$terms_list);
+						if ( is_array($item_cats) ) {
+							$item_cats_array = array();
+							$fields_out .= "<div class='m34loop-terms'>";
+							foreach ( $item_cats as $cat ) {
+								$cat_perma = get_term_link($cat);
+								$item_cats_array[] = "<a href='" .$cat_perma. "'>" .$cat->name. "</a>";
+							}
+							$fields_out .= implode(', ', $item_cats_array);
+							$fields_out .= "</div>";
+						}
+					}
+					continue 2;
+
 			}
 		} // end switcher to include fields
 
 		$loop_out .= "<article class='m34loop-item m34loop-item-".$colums."-col " .$item_class. "'>
-			" .$fields_out . $item_cats_out. "
+			" .$fields_out. "
 		</article>";
 
 	} // END foreach $loop_items
