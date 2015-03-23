@@ -16,7 +16,16 @@ function m34loops_scripts_styles() {
 	wp_enqueue_style( 'm34loops-css',plugins_url( 'style/loop-shortcode-m34.css' , __FILE__) );
 } // END register scripts and styles
 
-/* Loops shortcode */
+/* Loops shortcode
+   Parameters:
+	+ To build the loop. This group of parameters works the same way as WP_Query args
+	  post_type
+	  order
+	  orderby
+	  posts_per_page
+	+ To build each loop item (fields):
+	  fields: comma separated fields. Options: featured image, title, date, excerpt
+ */
 add_shortcode('m34loop', 'm34loops');
 function m34loops( $loop_args ) {
 	extract(shortcode_atts(
