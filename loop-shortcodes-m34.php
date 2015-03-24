@@ -23,8 +23,16 @@ function m34loops_scripts_styles() {
 	  order
 	  orderby
 	  posts_per_page
+	  taxonomy
+	  terms
+	  meta_key
+	  meta_value
+	  meta_value_num
+	  meta_compare
 	+ To build each loop item (which fields and how to order them):
 	  fields: comma separated fields. Options: featured image, title, date, excerpt, a taxnomony slug
+	+ Placeholders
+	  %today% in meta_value or meta_value_num values today's date with the format Y-m-d (usefull to make a loop of current events)
  */
 add_shortcode('m34loop', 'm34loops');
 function m34loops( $loop_args ) {
@@ -34,6 +42,12 @@ function m34loops( $loop_args ) {
 			'order' => 'DESC',
 			'orderby' => 'date',
 			'posts_per_page' => '12',
+			'taxonomy' => '',
+			'terms' => '',
+			'meta_key' => '',
+			'meta_value' => '',
+			'meta_value_num' => '',
+			'meta_compare' => '',
 			'fields' => 'featured image,title,date,excerpt',
 			'colums' => '1'
 		),
@@ -46,12 +60,36 @@ function m34loops( $loop_args ) {
 		'orderby' => $orderby,
 		'order' => $order
 	);
+	if ( taxonomy_exists($taxonomy) ) {
+		$terms = explode(',',$terms);
+		$args['tax_query'] = array(
+			array(
+				'taxonomy' => $taxonomy,
+				'field' => 'slug',
+				'terms' => $terms
+			)
+		);
+	}
+	if ( $meta_key != '' || $meta_value != '' || $meta_value_num != '' ) {
+		$meta_query = array();
+		if ( $meta_key != '' ) { $meta_query['key'] = $meta_key; }
+		if ( $meta_value == '%today%' || $meta_value_num == '%today%' ) { $meta_query['value'] = date('Y-m-d'); }
+		elseif ( $meta_value != '' ) { $meta_query['value'] = $meta_value; }
+		elseif ( $meta_value_num != '' ) { $meta_query['value'] = $meta_value_num; $meta_query['type'] = "numeric"; }
+		if ( $meta_compare != '' ) {
+			$meta_compare = str_replace("-","<",$meta_compare);
+			$meta_compare = str_replace("+",">",$meta_compare);
+			$meta_query['compare'] = $meta_compare;
+		}
+		$args['meta_query'] = array($meta_query);
+	}
+
 	$loop_items = get_posts($args);
 
 	// fields to include in each item
 	$fields = explode(',',$fields);
 
-	$loop_out = "";
+	$loop_out = "<div class='m34loop-container'>";
 	$loop_count = 0;
 	foreach ( $loop_items as $item ) {
 		$loop_count++;
@@ -113,6 +151,7 @@ function m34loops( $loop_args ) {
 		</article>";
 
 	} // END foreach $loop_items
+	$loop_out .= "</div><!-- .m34loop-container -->";
 	return $loop_out;
 
 } /* END loops shortcode */
