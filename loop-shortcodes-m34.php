@@ -33,6 +33,9 @@ function m34loops_scripts_styles() {
 	  fields: comma separated fields. Options: featured image, title, date, excerpt, a taxnomony slug
 	+ Placeholders
 	  %today% in meta_value or meta_value_num values today's date with the format Y-m-d (usefull to make a loop of current events)
+	+ Style output
+	  colums: from 1 to 4
+	  image_size: thumbnail, medium, large, full or any other registered size
  */
 add_shortcode('m34loop', 'm34loops');
 function m34loops( $loop_args ) {
@@ -49,7 +52,8 @@ function m34loops( $loop_args ) {
 			'meta_value_num' => '',
 			'meta_compare' => '',
 			'fields' => 'featured image,title,date,excerpt',
-			'colums' => '1'
+			'colums' => '1',
+			'image_size' => 'large',
 		),
 		$loop_args,
 		'm34loop'
@@ -108,7 +112,7 @@ function m34loops( $loop_args ) {
 			
 				case 'featured image' : // featured image
 					if ( has_post_thumbnail($item->ID) ) {
-						$fields_out .= "<figure><a href='" .$item_perma. "' title='" .$item_tit. "' rel='bookmark'>" .get_the_post_thumbnail($item->ID,'medium'). "</a></figure>";
+						$fields_out .= "<figure><a href='" .$item_perma. "' title='" .$item_tit. "' rel='bookmark'>" .get_the_post_thumbnail($item->ID,$image_size). "</a></figure>";
 					}
 					continue 2;
 		
