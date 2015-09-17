@@ -98,7 +98,6 @@ function m34loops( $loop_args ) {
 	foreach ( $loop_items as $item ) {
 		$loop_count++;
 		$item_class = "m34loop-item-" .$loop_count;
-		if ( $loop_count == 4 ) {  $loop_count = 0; }
 		setup_postdata($item);
 
 		// fixed fields
@@ -153,6 +152,29 @@ function m34loops( $loop_args ) {
 		$loop_out .= "<article class='m34loop-item m34loop-item-".$colums."-col " .$item_class. "'>
 			" .$fields_out. "
 		</article>";
+
+		// aux divs for responsive cols
+		switch ( trim($colums)) {
+			case '4' :
+				if ( $loop_count == 4 ) { $loop_out .= "<div class='clearfix visible-large'></div>"; }
+				elseif ( $loop_count == 3 ) { $loop_out .= "<div class='clearfix visible-medium'></div>"; }
+				elseif ( $loop_count == 2 ) { $loop_out .= "<div class='clearfix visible-small'></div>"; }
+				break;
+
+			case '3' :
+				if ( $loop_count == 3 ) { $loop_out .= "<div class='clearfix visible-large visible-medium'></div>"; }
+				elseif ( $loop_count == 2 ) { $loop_out .= "<div class='clearfix visible-small'></div>"; }
+				break;
+
+			case '2' :
+				if ( $loop_count == 2 ) { $loop_out .= "<div class='clearfix visible-large visible-medium visible-small'></div>"; }
+				break;
+
+			case '1' :
+				break;
+
+		} // end switcher
+		if ( $loop_count == $colums ) {  $loop_count = 0; }
 
 	} // END foreach $loop_items
 	$loop_out .= "</div><!-- .m34loop-container -->";
