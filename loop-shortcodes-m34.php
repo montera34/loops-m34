@@ -3,8 +3,8 @@
 Plugin Name: Loop shortcodes m34
 Description: This plugin allows you to include posts lists in your posts and pages via shortcodes.
 Version: 0.1
-Author: montera34
-Author URI: http://montera34.com
+Author: Montera34
+Author URI: https://montera34.com
 License: GPLv2+
 */
 
