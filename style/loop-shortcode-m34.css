@@ -30,9 +30,6 @@
 	margin-bottom: 3rem;
 	font-size: 1.3rem;
 }
-.m34loop-item a:hover {
-	text-decoration: underline;
-}
 .m34loop-item img {
 	max-width: 100%;
 	border-bottom: 3px solid transparent;
