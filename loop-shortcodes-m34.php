@@ -118,10 +118,22 @@ function m34loops( $loop_args ) {
 				case 'title' : // title
 					$fields_out .= "<header><h4 class='m34loop-tit'><a href='" .$item_perma. "' title='" .$item_tit. "' rel='bookmark'>" .$item_tit. "</a></h4></header>";
 					continue 2;
+
+				case 'subtitle' : // date
+					$subtitle = get_post_meta( $item->ID, 'subtitulo', true );
+					$fields_out .= "<div class='m34loop-subtitle'>" .$subtitle. "</div>";
+					continue 2;
+
+				case 'location' : // date
+					$donde = get_post_meta( $item->ID, 'donde', true );
+					$fields_out .= "<div class='m34loop-location'>" .$donde. "</div>";
+					continue 2;
 		
 				case 'date' : // date
-					$item_date_human = get_the_date('j F, Y',$item->ID);
-					$item_date = get_the_date('Y-m-d',$item->ID);
+					//$item_date_human = get_the_date('j F, Y',$item->ID);
+					//$item_date = get_the_date('Y-m-d',$item->ID);
+					$item_date_human = date('d M G:i' ,strtotime(get_post_meta( $item->ID, 'cuando', true )));
+					$item_date = get_post_meta( $item->ID, 'cuando', true );
 					$fields_out .= "<time class='m34loop-date' datetime='$item_date'>" .$item_date_human. "</time>";
 					continue 2;
 	
