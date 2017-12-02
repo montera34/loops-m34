@@ -126,7 +126,7 @@ function m34loops( $loop_args ) {
 					continue 2;
 	
 				case 'excerpt' : // excerpt
-					$item_desc = get_the_excerpt();
+					$item_desc = apply_filters( 'the_content', get_the_excerpt($item->ID) );
 					$fields_out .= "<div class='m34loop-desc'>" .$item_desc. "</div>";
 					continue 2;
 
